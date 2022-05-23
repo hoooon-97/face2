@@ -15,10 +15,14 @@ mtcnn = MTCNN(image_size=240, margin=0, keep_all=True, min_face_size=40) # keep_
 resnet = InceptionResnetV1(pretrained='vggface2').eval()
 
 class FaceDetect(object):
+    
     def __init__(self):
         self.video = cv2.VideoCapture(0)
         (self.grabbed, self.frame) = self.video.read()
         threading.Thread(target=self.update, args=()).start()
+    
+    def getName():
+        return 
     
     # 여기서 딥러닝 모델을 적용 시켜야함
     def get_frame(self):
@@ -48,13 +52,16 @@ class FaceDetect(object):
                         min_dist = min(dist_list) # get minumum dist value
                         min_dist_idx = dist_list.index(min_dist) # get minumum dist index
                         name = name_list[min_dist_idx] # get name corrosponding to minimum dist
-                        
                         box = boxes[i] 
                         min_dist = round(min_dist, 3)
                         original_frame = frame.copy() # storing copy of frame before drawing on it
                         
+                        print(name, min_dist)
+                        
                         if min_dist<0.90:
                             frame = cv2.putText(frame, name+' '+ str(min_dist), (int(box[0]),int(box[1])), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0),1, cv2.LINE_AA)
+                        else:
+                            print('출석완료')
                         
                         frame = cv2.rectangle(frame, (int(box[0]),int(box[1])) , (int(box[2]),int(box[3])), (255,0,0), 2)
                         
